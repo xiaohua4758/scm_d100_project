@@ -1,10 +1,10 @@
 /***************************************  File Info **********************************************
 ** File name:			myfunction.c
-** Descriptions:        °´¼üÓëĞÅºÅ´¦Àíº¯Êı,ÏµÍ³´¦Àíº¯Êı
+** Descriptions:        æŒ‰é”®ä¸ä¿¡å·å¤„ç†å‡½æ•°,ç³»ç»Ÿå¤„ç†å‡½æ•°
 ** Created by:			CSH
 ** Created date:		2012.02.19
 *************************************************************************************************/
-#include "N76E003.h"          //°üº¬ÓÃµ½µÄÍâÉèµÄÍ·ÎÄ¼ş
+#include "N76E003.h"          //åŒ…å«ç”¨åˆ°çš„å¤–è®¾çš„å¤´æ–‡ä»¶
 #include "string.h"
 #include "SFR_Macro.h"
 #include "Function_Define.h"
@@ -13,7 +13,7 @@
 #include "flash.h"
 
 volatile u8 usent_ok=0;			//uart
-unsigned int save_delay=0;		//±£´æÑÓÊ±
+unsigned int save_delay=0;		//ä¿å­˜å»¶æ—¶
 uart_rcv_str uart_rcv={0};
 u8 g_m_connect_sta=0;
 
@@ -21,14 +21,14 @@ u8 g_m_connect_sta=0;
 *function:  void delay(unsigned int t)
 *input:     NULL
 *output:    NULL
-*describe:  ÉÔ³¤ÑÓÊ±
+*describe:  ç¨é•¿å»¶æ—¶
 **************************************************************************/
 void delay(unsigned int t)
 {
 	volatile unsigned int i;
 	while(t--){
 		i=30;
-		while(i--); //×öÒ»Ğ©Ã»ÓĞÓÃµÄÊÂ£¬´ò·¢Ê±¼ä
+		while(i--); //åšä¸€äº›æ²¡æœ‰ç”¨çš„äº‹ï¼Œæ‰“å‘æ—¶é—´
 	}
 }
 
@@ -70,7 +70,7 @@ void sent_frame(u8 *dat,u8 len)
 	uart0_sent_buff(dat,len);	// sdata
 	uart0_sent(lrc);			// lrc
 
-	uart_rcv.out_time = 1;		// ¿ªÊ¼¼ÆÊ±
+	uart_rcv.out_time = 1;		// å¼€å§‹è®¡æ—¶
 }
 
 void uart_rcv_data(u8 rdat)
@@ -126,7 +126,7 @@ void uart_rcv_data(u8 rdat)
 				rdat+=uart_rcv.dat[i];
 			if(rdat==uart_rcv.dat[uart_rcv.cnt])
 			{
-				uart_rcv.out_time = 0;		// STOP¼ÆÊ±
+				uart_rcv.out_time = 0;		// STOPè®¡æ—¶
 				uart_rcv.flag=UCOM_RCV_OK;
 			}
 			else
@@ -172,9 +172,9 @@ u8 sent_cmd(u8 *out_buf,u8 tlen, u8 *rcv_buf, u8 *rlen, u16 outtime)
             break;
         }
 
-		outtime = 30;              			// 0.3S ³¬Ê±
+		outtime = 30;              			// 0.3S è¶…æ—¶
 
-        if(uart_rcv.out_time > outtime)   	// 0.3S ³¬Ê±
+        if(uart_rcv.out_time > outtime)   	// 0.3S è¶…æ—¶
         {
             return UCOM_RCV_TIMEOUT;
         }
@@ -192,16 +192,16 @@ void init_uart0(u32 bdr , u8 tx_or_rx)    //T1M = 1, SMOD = 1
 {
     const u32 sys_osc = 16000000;    //16mhz
 
-    const u32 div=(sys_osc)/(16);   // 1000000Îªus½ÚÅÄ,16ÎªÄ£Ê½1µÄË«ËÙÂÊµÄ¹Ì¶¨·ÖÆµÒò×Ó,3ÎªÏµÍ³Ê±ÖÓÎª1/3mhz
+    const u32 div=(sys_osc)/(16);   // 1000000ä¸ºusèŠ‚æ‹,16ä¸ºæ¨¡å¼1çš„åŒé€Ÿç‡çš„å›ºå®šåˆ†é¢‘å› å­,3ä¸ºç³»ç»Ÿæ—¶é’Ÿä¸º1/3mhz
 
     P07_Quasi_Mode;     //rx en
     P07=1;
 
-    SCON=BIT6;          //MODE1 Òì²½10Î»(1ÆğÊ¼+8Êı¾İ+1Í£Ö¹)
+    SCON=BIT6;          //MODE1 å¼‚æ­¥10ä½(1èµ·å§‹+8æ•°æ®+1åœæ­¢)
 
-    TMOD |= 0x20;       //Timer1 Mode1 8Î»¶¨Ê±Æ÷Ä£Ê½,TH1×Ô¶¯×°ÔØ
+    TMOD |= 0x20;       //Timer1 Mode1 8ä½å®šæ—¶å™¨æ¨¡å¼,TH1è‡ªåŠ¨è£…è½½
     set_SMOD;           //UART0 Double Rate Enable
-    set_T1M;            //time1 ÎªÏµÍ³Ê±ÖÓ
+    set_T1M;            //time1 ä¸ºç³»ç»Ÿæ—¶é’Ÿ
     clr_BRCK;           //Serial port 0 baud rate clock source = Timer1
 
 	if(tx_or_rx==1)
@@ -222,7 +222,7 @@ void init_uart0(u32 bdr , u8 tx_or_rx)    //T1M = 1, SMOD = 1
 
     if(div/bdr>254)
     {
-        clr_T1M;            // ÏµÍ³Ê±ÖÓ 1/12
+        clr_T1M;            // ç³»ç»Ÿæ—¶é’Ÿ 1/12
         TH1 = 256 - (div/(12*bdr)+1);        //
     }
     else
@@ -254,7 +254,7 @@ void serial_isr(void) interrupt 4
 *function:  void iwgd_init(void)
 *input:     NULL
 *output:    NULL
-*describe:  ¿´ÃÅ¹·³õÊ¼»¯
+*describe:  çœ‹é—¨ç‹—åˆå§‹åŒ–
 **************************************************************************/
 void iwgd_init(void)
 {
@@ -265,7 +265,7 @@ void iwgd_init(void)
 *function:  void readout_data(void)
 *input:     NULL
 *output:    NULL
-*describe:  ¶Á³ö±£´æÊı¾İ´¦Àíº¯Êı
+*describe:  è¯»å‡ºä¿å­˜æ•°æ®å¤„ç†å‡½æ•°
 **************************************************************************/
 u8 readout_data(void)
 {
@@ -285,7 +285,12 @@ u8 readout_data(void)
 	sys_para.backup_shock_level=read_APROM_BYTE(SYS_SHOCK_VALUE);
 	if(sys_para.backup_shock_level>30)
 		sys_para.backup_shock_level=1;
-
+	if(0==sys_para.backup_delay_time_unit)
+	{
+		if(sys_para.backup_delay_time<5)		//æœ€å°‘ä¸º0.5ç§’
+			sys_para.backup_delay_time=10;
+	}
+	
 	sys_para.delay_time_unit=sys_para.backup_delay_time_unit;
 	sys_para.delay_time=sys_para.backup_delay_time;
 	sys_para.shock_level=sys_para.backup_shock_level;
@@ -297,7 +302,7 @@ u8 readout_data(void)
 *function:  void hook_save_data(void)
 *input:     NULL
 *output:    NULL
-*describe:  ÑÓÊ±±£´æÊı¾İ
+*describe:  å»¶æ—¶ä¿å­˜æ•°æ®
 **************************************************************************/
 void hook_save_100ms(u8 time)
 {
@@ -320,14 +325,14 @@ void save_data(void)
 *function:  void save_proc(void)
 *input:     NULL
 *output:    NULL
-*describe:  ±£´æÊı¾İ´¦Àíº¯Êı
+*describe:  ä¿å­˜æ•°æ®å¤„ç†å‡½æ•°
 **************************************************************************/
 void save_proc(void)
 {
     static u32 f100ms_save=0;
 	if(save_delay>0)
 	{
-        if(timeout_chk(&f100ms_save, 50)==SUCCESS)            //¶¨Òå½ÚÅÄ50ms
+        if(timeout_chk(&f100ms_save, 50)==SUCCESS)            //å®šä¹‰èŠ‚æ‹50ms
         {
             timeout_chk(&f100ms_save, 0);
     		save_delay--;
@@ -390,7 +395,7 @@ void connect_service(void)
                             sys_para.delay_time=sys_para.rd_delay_time;
                             sys_para.shock_level=sys_para.rd_shock_level;
 
-							sys_para.is_config=2;			//¶Á³ö³É¹¦
+							sys_para.is_config=2;			//è¯»å‡ºæˆåŠŸ
 
 							lcd_show.config_name=1;
                             lcd_show.delay_unit=1;
